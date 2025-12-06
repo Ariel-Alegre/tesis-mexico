@@ -1,28 +1,28 @@
+
+
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
+  }
 });
+
+transporter.verify()
+  .then(() => console.log("SMTP OK"))
+  .catch(e => console.log("SMTP ERROR:", e.message));
+
 module.exports = {
-    FormCotization: async (req, res) => {
-    const {
-      name,
-     project,
-     career,
-     phone,
-     email
-    } = req.body;
+  FormCotization: async (req, res) => {
+    const { name, project, career, phone, email } = req.body;
 
     try {
-      const emailAdmin = `
+     const emailAdmin = `
         <html>
           <body style="background-color: #f4f4f4; display: grid; justify-content: center; max-width: 100%; padding: 2em 0;">
               <div style="border: 1px solid #ddd; border-radius: 10px; padding: 2em; width: 600px; max-width: 100%; margin: 0 auto; font-family: Arial, Helvetica, sans-serif; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
@@ -50,14 +50,14 @@ module.exports = {
         </html>
       `;
 
-     await transporter.sendMail({
+      await transporter.sendMail({
         from: process.env.EMAIL,
         to: process.env.EMAIL,
         subject: 'Petición de cotización.',
         html: emailAdmin,
-      }); 
+      });
 
-      // Correo al cliente
+           // Correo al cliente
       const emailContent = `
       <html>
 
@@ -86,15 +86,16 @@ module.exports = {
 </html>
 
       `;
-    await transporter.sendMail({
-        from: "info@mitesismexico.com",
+
+      await transporter.sendMail({
+        from: process.env.EMAIL,
         to: email,
         subject: '¡Tu petición de cotización ha sido completada exitosamente!',
         html: emailContent,
-      }); 
+      });
 
-      // Respuesta al cliente
       res.status(200).json({ message: 'Correos enviados exitosamente.' });
+
     } catch (error) {
       console.log('Error en el servidor:', error.message);
       res.status(500).json({ message: 'Error en el servidor' });
