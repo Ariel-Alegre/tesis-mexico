@@ -61,6 +61,16 @@ const createHome = async (req, res) => {
         titleFlexibidad,
         descriptionFlexibidad,
       } = req.body;
+
+         let bgImage = '';
+      if (req.files && req.files.bgImage && req.files.bgImage[0] && req.files.bgImage[0].path) {
+        bgImage = req.files.bgImage[0].path;
+      }
+
+      let elaborationImage = '';
+      if (req.files && req.files.elaborationImage && req.files.elaborationImage[0] && req.files.elaborationImage[0].path) {
+        elaborationImage = req.files.elaborationImage[0].path;
+      }
       const newHome = await Home.create({
         title,
         subTitle,
@@ -84,8 +94,8 @@ const createHome = async (req, res) => {
         descriptionGarantia,
         titleFlexibidad,
         descriptionFlexibidad,
-        bgImage: req.files?.bgImage?.[0]?.path || '',
-        elaborationImage: req.files?.elaborationImage?.[0]?.path || ''
+       bgImage: bgImage,
+        elaborationImage: elaborationImage,
         
 
       });
