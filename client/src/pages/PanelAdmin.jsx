@@ -16,11 +16,13 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { clearAdminToken } from '../auth';
 
 const drawerWidth = 240;
 
 function PanelAdmin(props) {
+  const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -45,22 +47,9 @@ function PanelAdmin(props) {
       <Toolbar />
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {[['Inicio', 'inicio'], ['Nosotros', 'sobre-nosotros'], ['Servicios', 'servicios'], ['Contacto', 'contáctanos'], ['Pagos', 'métodos-de-pago']].map(([text, path], index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
+            <ListItemButton component={Link} to={`/editar/${path}`}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
@@ -96,7 +85,8 @@ function PanelAdmin(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+            Panel administrativo
+          <button onClick={() => { clearAdminToken(); navigate('/admin/login'); }} style={{ marginLeft: 'auto' }}>Cerrar sesión</button>
           </Typography>
         </Toolbar>
       </AppBar>

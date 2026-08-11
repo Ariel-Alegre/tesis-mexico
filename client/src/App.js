@@ -1,6 +1,9 @@
 
 
 import { BrowserRouter as Router, Routes, Route,  } from 'react-router-dom';
+import { enableAuthenticatedApiRequests } from './auth';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminLogin from './pages/AdminLogin';
 import Home from "./pages/Home";
 import About from './pages/About';
 import Services from './pages/Services';
@@ -39,6 +42,7 @@ import PendingPayment from './pages/PendingPayment';
 
 
 function App() {
+  enableAuthenticatedApiRequests();
 
 
   return (
@@ -74,23 +78,29 @@ function App() {
       
       
       <Route path="/test" element={<Test />}/>
+      <Route path="/admin/login" element={<AdminLogin />}/>
+      <Route element={<ProtectedRoute />}>
+      <Route path="/editar" element={<PanelAdmin />}>
 
-      <Route path="/editar/inicio" element={<HomeEdit />}/>
-      <Route path="/editar/sobre-nosotros" element={<AboutEdit />}/>
-      <Route path="/editar/servicios" element={<ServicesEdit />}/>
+      <Route index element={<HomeEdit />}/>
+      <Route path="inicio" element={<HomeEdit />}/>
+      <Route path="sobre-nosotros" element={<AboutEdit />}/>
+      <Route path="servicios" element={<ServicesEdit />}/>
 
-      <Route path="/editar/contáctanos" element={<ContactEdit />}/>
-      <Route path="/editar/métodos-de-pago" element={<PaymentMethodsEdit />}/>
-      <Route path="/editar/redacción-tesis" element={<RedactionTesisEdit />}/>
-      <Route path="/editar/asesoría-académica" element={<ThesisAdviceEdit />}/>
-      <Route path="/editar/correcciones" element={<CorrectionEdit />}/>
-      <Route path="/editar/monografía" element={<MonographEdit />}/>
-      <Route path="/editar/memoria-trabajo" element={<MemoryJobEdit />}/>
+      <Route path="contáctanos" element={<ContactEdit />}/>
+      <Route path="métodos-de-pago" element={<PaymentMethodsEdit />}/>
+      <Route path="redacción-tesis" element={<RedactionTesisEdit />}/>
+      <Route path="asesoría-académica" element={<ThesisAdviceEdit />}/>
+      <Route path="correcciones" element={<CorrectionEdit />}/>
+      <Route path="monografía" element={<MonographEdit />}/>
+      <Route path="memoria-trabajo" element={<MemoryJobEdit />}/>
 
-      <Route path="/editar/artículo-cientifico" element={<ScientificArticleEdit />}/>
+      <Route path="artículo-cientifico" element={<ScientificArticleEdit />}/>
 
-      <Route path="/editar/análisis-estadístico" element={<StatisticalAnalysisEdit />}/>
+      <Route path="análisis-estadístico" element={<StatisticalAnalysisEdit />}/>
 
+      </Route>
+      </Route>
 
       
 

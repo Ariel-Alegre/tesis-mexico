@@ -345,7 +345,7 @@ export default function Contact() {
                       </Col>
             
                       <Col md={6} className="text-center position-relative">
-                        <img src={previewgImage.imgHeader || array?.imgHeader}  alt="Chica feliz" className="img-contacto" />
+                        <img src={previewgImage.imgHeader || array?.imgHeader}  alt="" className="img-contacto" />
                         <div className="icono icono1">💬</div>
                         <div className="icono icono2">📜</div>
                         <div className="flecha">⬆️</div>

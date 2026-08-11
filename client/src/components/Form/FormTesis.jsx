@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Form, Button, Card, Spinner, Alert } from "react-bootstrap";
-
+import emailjs from 'emailjs-com';
 export default function FormTesis() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -40,35 +40,48 @@ export default function FormTesis() {
     if (validateStep1()) setStep(2);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validateStep2()) {
-      setLoading(true);
-      setSuccessMessage(""); // Limpiar mensaje previo
-      try {
-        const response = await fetch('https://tesis-mexico-production.up.railway.app/api/cotizacion', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-        const result = await response.json();
+  try {
+    // 1. Mail para VOS
+   await emailjs.send(
+      'service_an5k21c',
+      'template_8dks7fs',
+      {
+        name: formData.name,
+        project: formData.project,
+        career: formData.career,
+        phone: formData.phone,
+        email: formData.email,
+      },
+      '0_fO9HKUIgtXQobTC'
+    );
 
-        if (response.ok) {
-          setSuccessMessage("¡Formulario enviado exitosamente!");
-          setFormData({ name: "", project: "", career: "", phone: "", email: "" });
-          setStep(1);
-        } else {
-          alert('Error al enviar el formulario');
-        }
-      } catch (error) {
-        console.error('Error en la solicitud:', error);
-        alert('Error en la conexión con el servidor');
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+    // 2. Mail para el CLIENTE
+    await emailjs.send(
+      'service_an5k21c',
+      'template_wizmyh7',
+      {
+        name: formData.name,
+        email: formData.email,
+      },
+      '0_fO9HKUIgtXQobTC'
+    );
+
+    setSuccessMessage('¡Formulario enviado exitosamente!');
+    setFormData({
+   name: "", project: "", career: "", phone: "", email: ""
+    });
+
+  } catch (error) {
+    console.error(error);
+    setSuccessMessage('Hubo un error al enviar el Formulario');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Card style={{ maxWidth: "500px", padding: "20px", backgroundColor: "#f8f9fa", borderRadius: "10px" }} data-aos="fade-up" data-aos-delay="300">

@@ -9,10 +9,10 @@ export default function Footer() {
         <div class="container footer-top">
           <div class="row gy-4">
             <div class="col-lg-4 col-md-6 footer-about">
-              <a href="index.html" class="logo d-flex align-items-center" style={{textDecoration: "none"}}>
+              <Link to="/" class="logo d-flex align-items-center" style={{textDecoration: "none"}}>
       <img src={require("../../assets/img/Logo.png")} alt=""/> 
 
-              </a>
+              </Link>
               <div class="footer-contact pt-3">
                 <p>Ciudad de Mexico, CDMX.</p>
                 <p class="mt-3"><strong>Teléfono:</strong> <a href="tel:+525564727323"  target="_blank" rel="noopener noreferrer">(+52) 55 6472 7323</a></p>
@@ -29,11 +29,11 @@ export default function Footer() {
             <div class="col-lg-2 col-md-3 footer-links">
               <h4>Links</h4>
               <ul>
-                <li><Link to="#">Inicio</Link></li>
-                <li><Link to="#">¿Quienes somos? </Link></li>
-                <li><Link to="#">Servicios</Link></li>
-                <li><Link to="#">Contáctanos</Link></li>
-                <li><Link to="#">Método de pagos</Link></li>
+                <li><Link to="/">Inicio</Link></li>
+                <li><Link to="/sobre-nosotros">¿Quienes somos? </Link></li>
+                <li><Link to="/servicios">Servicios</Link></li>
+                <li><Link to="/contáctanos">Contáctanos</Link></li>
+                <li><Link to="/métodos-de-pago">Método de pagos</Link></li>
 
           
               </ul>
@@ -65,10 +65,10 @@ export default function Footer() {
     
         <div class="container copyright text-center mt-4">
           <p>© <span>Copyright</span> <strong class="px-1 sitename">Mi Tesis México</strong> </p>
-          <div class="credits">
+        {/*   <div class="credits">
      
           Diseñado por <a href="https://www.elaritech.com/"> <img src={require("../../assets/img/Elaritech.jpg")} alt="ELARITECH" style={{width: "50px"}} />ELARITECH</a>
-          </div>
+          </div> */}
         </div>
     
       </footer>

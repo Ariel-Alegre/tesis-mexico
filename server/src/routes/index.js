@@ -14,12 +14,23 @@ const routerMonograph= require("./monograph");
 const routerMemoryjob= require("./memoryjob");
 const routerScientificarticle= require("./scientificarticle");
 const routerStatisticalanalysis= require("./statisticalanalysis");
+const routerAuth = require('./auth');
+const { requireAdmin } = require('../middleware/adminAuth');
 
 
 
 
 
-router.use('/api',routerHome, routerform, routerContact, routerAbout, routerServices, routerPaymentmethod, routerRedactionTesis, routerAcademi, routerCorrection, routerMonograph, routerMemoryjob, routerScientificarticle, routerStatisticalanalysis) 
+router.use('/api', routerAuth);
+
+// Los formularios de visitantes, los pagos y los webhooks deben seguir siendo públicos.
+const publicWritePaths = new Set(['/contact', '/cotizacion', '/crear-pago', '/webhook']);
+router.use('/api', (req, res, next) => {
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method) && !publicWritePaths.has(req.path)) {
+    return requireAdmin(req, res, next);
+  }
+  return next();
+}, routerHome, routerform, routerContact, routerAbout, routerServices, routerPaymentmethod, routerRedactionTesis, routerAcademi, routerCorrection, routerMonograph, routerMemoryjob, routerScientificarticle, routerStatisticalanalysis);
 
 
 
